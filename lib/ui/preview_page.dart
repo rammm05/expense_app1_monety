@@ -1,0 +1,122 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class PreviewPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(child: Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        child: Column(
+          children: [
+            getTitle(),
+            SizedBox(height: 30,),
+            Stack(
+              children: [
+                getCard(),
+                Positioned(
+                  left: 30,
+                  bottom: 30,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: nextBtn()
+    ));
+  }
+
+  ///...title part 1
+  Widget getTitle(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          maxRadius: 20,
+          backgroundImage: AssetImage("assets/images/logo_monety.png"),
+        ),
+        SizedBox(width: 5,),
+        Text("Monety", style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w500
+        ),),
+      ],
+    );
+
+
+  }
+
+  ///...card part 2
+  Widget getCard(){
+    return Container(
+      width: double.infinity,
+      height: 650,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Colors.grey.shade200,
+              Colors.white
+            ]),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          Image.asset("assets/images/bg_monety_preview.png",
+            width: double.infinity,),
+          SizedBox(height: 20,),
+          Text("Easy way to monitor your expense",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 35,
+                height: 1
+            ),textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20,),
+          Text("Safe your future by managing your expense right now",
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey
+            ),textAlign: TextAlign.center,
+          ),
+
+        ],
+      ),
+    );
+
+  }
+
+  ///...nextBtn part 3
+  Widget nextBtn(){
+    return Align(
+      alignment: Alignment(1, 0.9),
+      child: Container(
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15)
+        ),
+        child: SizedBox(
+          width: 70,
+          height: 70,
+          child: FloatingActionButton(onPressed: (){},
+            backgroundColor: Colors.pink.shade200,
+            child: Icon(CupertinoIcons.arrow_right, color: Colors.white, size: 25,),
+          ),
+        ),
+      ),
+    );
+
+  }
+}
