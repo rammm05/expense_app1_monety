@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:expense_app1/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class SplashPage extends StatelessWidget{
   Widget build(BuildContext context) {
 
     Timer(Duration(seconds: 4), (){
-      //Navigator.pushNamed(context, routeName)
+      Navigator.pushReplacementNamed(context, AppRoutes.route_preview);
     });
 
     return Scaffold(

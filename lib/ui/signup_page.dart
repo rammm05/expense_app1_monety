@@ -1,7 +1,12 @@
+import 'package:expense_app1/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatelessWidget{
+
+  TextEditingController useridControlller = TextEditingController();
+  TextEditingController passwordControlller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,38 +28,40 @@ class SignupPage extends StatelessWidget{
           children: [
             SizedBox(height: 150,),
             TextField(
-              //controller: username,
+              controller: useridControlller,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)
                   ),
-                  hintText: "Enter username",
-                  labelText: "Username",
-                  fillColor: Colors.grey.shade200,
+                  hintText: "Enter user id",
+                  labelText: "User id",
+                  fillColor: Colors.deepPurple.shade100,
                   filled: true
               ),
             ),
             SizedBox(height: 20,),
             TextField(
-              //controller: username,
+              controller: passwordControlller,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black)
                   ),
                   hintText: "Create password",
                   labelText: "Password",
-                  fillColor: Colors.grey.shade200,
+                  fillColor: Colors.deepPurple.shade100,
                   filled: true
               ),
             ),
             SizedBox(height: 30,),
-            OutlinedButton(onPressed: (){}, child: Text("Sign up", style: TextStyle(fontSize: 25),),),
+            OutlinedButton(onPressed: (){
+              Navigator.pushReplacementNamed(context, AppRoutes.route_home);
+            }, child: Text("Sign up", style: TextStyle(fontSize: 25),),),
             SizedBox(height: 150,),
             InkWell(
-              onTap: (){
-
-              },
-                child: Text("Back to Login", style: TextStyle(fontSize: 25, color: Colors.deepPurple,),)),
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                    child: Text("Back to Login", style: TextStyle(fontSize: 20, color: Colors.deepPurple,),)),
 
           ],
         ),

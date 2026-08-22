@@ -1,7 +1,12 @@
+import 'package:expense_app1/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget{
+
+  TextEditingController useridControlller = TextEditingController();
+  TextEditingController passwordControlller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,27 +28,27 @@ class LoginPage extends StatelessWidget{
           children: [
             SizedBox(height: 150,),
             TextField(
-               //controller: username,
+               controller: useridControlller,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black)
                 ),
-                hintText: "Enter username",
-                labelText: "Username",
-                fillColor: Colors.grey.shade200,
+                hintText: "Enter user id",
+                labelText: "User id",
+                  fillColor: Colors.deepPurple.shade100,
                 filled: true
               ),
             ),
             SizedBox(height: 20,),
             TextField(
-              //controller: username,
+              controller: passwordControlller,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black)
                   ),
                   hintText: "Enter password",
                   labelText: "Password",
-                  fillColor: Colors.grey.shade200,
+                  fillColor: Colors.deepPurple.shade100,
                   filled: true
               ),
             ),
@@ -57,7 +62,7 @@ class LoginPage extends StatelessWidget{
                 SizedBox(width: 10,),
                 InkWell(
                   onTap: (){
-
+                    Navigator.pushNamed(context, AppRoutes.route_signup);
                   },
                     child: Text("Sign up", style: TextStyle(fontSize: 20, color: Colors.deepPurpleAccent),)),
               ],

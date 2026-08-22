@@ -1,13 +1,12 @@
 import 'package:expense_app1/db_helper.dart';
-import 'package:flutter/foundation.dart';
 
 class ExpenseModel {
   int? id;
   int moneySpent;
-  String title, desc, date;
+  String type, desc, date;
 
   ExpenseModel({
-    required this.title,
+    required this.type,
     required this.desc,
     required this.moneySpent,
     required this.date,
@@ -17,7 +16,7 @@ class ExpenseModel {
   //fromMapToModel
 factory ExpenseModel.fromMap(Map<String, dynamic> map){
   return ExpenseModel(
-      title: map[DbHelper.EXPENSE_TITLE],
+      type: map[DbHelper.EXPENSE_TYPE],
       desc: map[DbHelper.EXPENSE_DESC],
       moneySpent: map[DbHelper.EXPENSE_MONEY_SPENT],
       date: map[DbHelper.EXPENSE_DATE],
@@ -28,7 +27,7 @@ factory ExpenseModel.fromMap(Map<String, dynamic> map){
   //fromModelToMap
 Map<String, dynamic> toMap(){
   return {
-    DbHelper.EXPENSE_TITLE : title,
+    DbHelper.EXPENSE_TYPE : type,
     DbHelper.EXPENSE_DESC : desc,
     DbHelper.EXPENSE_MONEY_SPENT : moneySpent,
     DbHelper.EXPENSE_DATE : date,

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../app_routes.dart';
+
 class SecondPage extends StatelessWidget{
 
   List<Map<String, List>> expenseData = [
@@ -118,7 +120,7 @@ class SecondPage extends StatelessWidget{
                   writtenPercentage(),
                   gridPart(),
                   Divider(),
-                  lastBtn()
+                  lastBtn(context)
                 ],
               ),
             ),
@@ -396,22 +398,52 @@ class SecondPage extends StatelessWidget{
   );
 
   ///...lastBtns part ..10
-  Widget lastBtn(){
+  Widget lastBtn(context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(Icons.home, size: 30, color: Colors.grey),
-        Icon(Icons.auto_graph, size: 30, color: Colors.pinkAccent.shade100),
-        Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-                color: Colors.pinkAccent.shade100,
-                borderRadius: BorderRadius.circular(5)
-            ),
-            child: Icon(Icons.add, size: 30, color: Colors.white)),
-        Icon(CupertinoIcons.bell, size: 30, color: Colors.grey),
-        Icon(Icons.account_circle_outlined, size: 30, color: Colors.grey),
+        IconButton(
+            onPressed: (){
+              Navigator.pushNamed(context, AppRoutes.route_home);
+
+            },
+            icon: Icon(Icons.home, size: 30, color: Colors.pinkAccent.shade100)),
+
+        IconButton(
+          onPressed: (){
+            Navigator.pushNamed(context, AppRoutes.route_second_page);
+
+          },
+          icon: Icon(Icons.auto_graph, size: 30, color: Colors.grey),),
+
+        InkWell(
+          onTap: (){
+            Navigator.pushNamed(context, AppRoutes.route_insert_expense);
+          },
+          child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  color: Colors.pinkAccent.shade100,
+                  borderRadius: BorderRadius.circular(5)
+              ),
+              child: Icon(Icons.add, size: 30, color: Colors.white)),
+        ),
+
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.route_notification_page);
+
+          },
+          icon: Icon(CupertinoIcons.bell, size: 30, color: Colors.grey),),
+
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.route_profile_page);
+
+          },
+          icon:
+          Icon(Icons.account_circle_outlined, size: 30, color: Colors.grey),),
 
       ],
     );

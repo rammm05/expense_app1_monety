@@ -17,10 +17,15 @@ class DbHelper {
   static const String EXPENSE_TABLE = "expenseApp_table";
 
   static const String EXPENSE_ID = "expense_id";
-  static const String EXPENSE_TITLE = "expense_title";
+  static const String EXPENSE_TYPE = "expense_type";
   static const String EXPENSE_DESC = "expense_desc";
   static const String EXPENSE_MONEY_SPENT = "expense_money_spent";
   static const String EXPENSE_DATE = "expense_date";
+
+  static const String USER_TABLE = "user_table";
+  static const String USER_ID = "user_id";
+  static const String USER_PASSWORD = "user_password";
+
 
   Future<Database> initDB() async {
     return mDB ??= await openDB();
@@ -32,15 +37,22 @@ class DbHelper {
     String path = join(appDir.path, EXPENSE_DB);
 
     return openDatabase(path, version: 1, onCreate: (db , path){
-      db.execute(" create table $EXPENSE_TABLE ( $EXPENSE_ID integer primary key autoincrement, $EXPENSE_TITLE text not null, $EXPENSE_DESC text not null, $EXPENSE_MONEY_SPENT integer not null, $EXPENSE_DATE text not null) ");
+      //creating db
+      db.execute(" create table $EXPENSE_TABLE ( $EXPENSE_ID integer primary key autoincrement, $EXPENSE_TYPE text not null, $EXPENSE_DESC text not null, $EXPENSE_MONEY_SPENT integer not null, $EXPENSE_DATE text not null) ");
+      db.execute(" create table $USER_TABLE ( $USER_ID integer primary key, $USER_PASSWORD text not null) ");
     });
   }
+
+  /*Future<bool> insertIDP() async {
+    Database db = await initDB();
+    int rowsEffected = db.insert(USER_TABLE, values);
+    return rowsEffected>0;
+  }*/
 
   Future <bool> insertData({required ExpenseModel expense}) async {
     Database db = await initDB();
     int rowsEffected = await db.insert(EXPENSE_TABLE, expense.toMap());
     return rowsEffected>0;
-
   }
 
   Future<List<ExpenseModel>> fetchData() async {
@@ -53,8 +65,6 @@ class DbHelper {
       mExpense.add(ExpenseModel.fromMap(eachData));
     }
     return mExpense;
-
-
   }
 
 }

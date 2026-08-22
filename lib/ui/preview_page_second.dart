@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 
 import '../app_routes.dart';
 
-class PreviewPage extends StatelessWidget{
+class PreviewPageSecond extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -24,8 +24,8 @@ class PreviewPage extends StatelessWidget{
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
                       Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
                       Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
                     ],
                   ),
@@ -73,29 +73,12 @@ class PreviewPage extends StatelessWidget{
               Colors.white
             ]),
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(),
+        image: DecorationImage(image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR35CZUPvcdrkE0sGCzF6Iv38zweimjTmbEbX4cfqZlUA&s=10"), fit: BoxFit.cover)
       ),
-      child: Column(
-        children: [
-          Image.asset("assets/images/bg_monety_preview.png",
-            width: double.infinity,),
-          SizedBox(height: 20,),
-          Text("Easy way to monitor your expense",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 35,
-                height: 1
-            ),textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20,),
-          Text("Safe your future by managing your expense right now",
-            style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey
-            ),textAlign: TextAlign.center,
-          ),
-
-        ],
-      ),
+      child: Align(
+        alignment: Alignment(0, .8),
+          child: Text("Next", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)),
     );
 
   }
@@ -114,7 +97,7 @@ class PreviewPage extends StatelessWidget{
           width: 70,
           height: 70,
           child: FloatingActionButton(onPressed: (){
-            Navigator.pushReplacementNamed(context, AppRoutes.route_preview_second);
+            Navigator.pushReplacementNamed(context, AppRoutes.route_preview_third);
           },
             backgroundColor: Colors.pink.shade200,
             child: Icon(CupertinoIcons.arrow_right, color: Colors.white, size: 25,),
