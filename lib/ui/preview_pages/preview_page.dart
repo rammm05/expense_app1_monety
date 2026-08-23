@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-import '../app_routes.dart';
+import '../../app_routes.dart';
 
-class PreviewPageThird extends StatelessWidget{
+class PreviewPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -24,9 +24,9 @@ class PreviewPageThird extends StatelessWidget{
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
-                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
                       Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
                     ],
                   ),
                 )
@@ -73,8 +73,28 @@ class PreviewPageThird extends StatelessWidget{
               Colors.white
             ]),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(),
-        image: DecorationImage(image: NetworkImage("https://cdn.europosters.eu/image/1300/8939.jpg"),fit: BoxFit.fill)
+      ),
+      child: Column(
+        children: [
+          Image.asset("assets/images/bg_monety_preview.png",
+            width: double.infinity,),
+          SizedBox(height: 20,),
+          Text("Easy way to monitor your expense",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 35,
+                height: 1
+            ),textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 20,),
+          Text("Safe your future by managing your expense right now",
+            style: TextStyle(
+                fontSize: 20,
+                color: Colors.grey
+            ),textAlign: TextAlign.center,
+          ),
+
+        ],
       ),
     );
 
@@ -94,7 +114,7 @@ class PreviewPageThird extends StatelessWidget{
           width: 70,
           height: 70,
           child: FloatingActionButton(onPressed: (){
-            Navigator.pushReplacementNamed(context, AppRoutes.route_login);
+            Navigator.pushReplacementNamed(context, AppRoutes.route_preview_second);
           },
             backgroundColor: Colors.pink.shade200,
             child: Icon(CupertinoIcons.arrow_right, color: Colors.white, size: 25,),

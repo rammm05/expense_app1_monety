@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-import '../app_routes.dart';
+import '../../app_routes.dart';
 
-class PreviewPageSecond extends StatelessWidget{
+class PreviewPageThird extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Scaffold(
@@ -25,8 +25,8 @@ class PreviewPageSecond extends StatelessWidget{
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
-                      Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
                       Icon(Icons.circle , size: 15, color: Colors.grey.shade300,),
+                      Icon(Icons.circle , size: 15, color: Colors.amber.shade300,),
                     ],
                   ),
                 )
@@ -74,11 +74,8 @@ class PreviewPageSecond extends StatelessWidget{
             ]),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(),
-        image: DecorationImage(image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR35CZUPvcdrkE0sGCzF6Iv38zweimjTmbEbX4cfqZlUA&s=10"), fit: BoxFit.cover)
+        image: DecorationImage(image: NetworkImage("https://cdn.europosters.eu/image/1300/8939.jpg"),fit: BoxFit.fill)
       ),
-      child: Align(
-        alignment: Alignment(0, .8),
-          child: Text("Next", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)),
     );
 
   }
@@ -97,7 +94,7 @@ class PreviewPageSecond extends StatelessWidget{
           width: 70,
           height: 70,
           child: FloatingActionButton(onPressed: (){
-            Navigator.pushReplacementNamed(context, AppRoutes.route_preview_third);
+            Navigator.pushReplacementNamed(context, AppRoutes.route_login);
           },
             backgroundColor: Colors.pink.shade200,
             child: Icon(CupertinoIcons.arrow_right, color: Colors.white, size: 25,),

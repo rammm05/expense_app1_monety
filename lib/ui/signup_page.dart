@@ -54,12 +54,12 @@ class SignupPage extends StatelessWidget{
             ),
             SizedBox(height: 30,),
             OutlinedButton(onPressed: (){
-              Navigator.pushReplacementNamed(context, AppRoutes.route_home);
+              Navigator.pushReplacementNamed(context, AppRoutes.route_bottom_nav_main);
             }, child: Text("Sign up", style: TextStyle(fontSize: 25),),),
             SizedBox(height: 150,),
             InkWell(
                   onTap: (){
-                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context, AppRoutes.route_login);
                   },
                     child: Text("Back to Login", style: TextStyle(fontSize: 20, color: Colors.deepPurple,),)),
 

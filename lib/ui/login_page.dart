@@ -53,7 +53,8 @@ class LoginPage extends StatelessWidget{
               ),
             ),
             SizedBox(height: 30,),
-            OutlinedButton(onPressed: (){}, child: Text("Login", style: TextStyle(fontSize: 25),),),
+            OutlinedButton(onPressed: (){},
+              child: Text("Login", style: TextStyle(fontSize: 25),),),
             SizedBox(height: 150,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +63,7 @@ class LoginPage extends StatelessWidget{
                 SizedBox(width: 10,),
                 InkWell(
                   onTap: (){
-                    Navigator.pushNamed(context, AppRoutes.route_signup);
+                    Navigator.pushReplacementNamed(context, AppRoutes.route_signup);
                   },
                     child: Text("Sign up", style: TextStyle(fontSize: 20, color: Colors.deepPurpleAccent),)),
               ],

@@ -1,3 +1,4 @@
+import 'package:expense_app1/app_routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -50,11 +51,9 @@ class InsertExpensePage extends StatelessWidget{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton(onPressed: (){
-                    Navigator.pop(context);
-                  }, child: Text("Cancel", style: TextStyle(fontSize: 35),)),
+                  }, child: Text("Clear", style: TextStyle(fontSize: 35),)),
                   SizedBox(width: 30,),
                   OutlinedButton(onPressed: (){
-                    Navigator.pop(context);
                   }, child: Text("Save", style: TextStyle(fontSize: 35),)),
                 ],
               )

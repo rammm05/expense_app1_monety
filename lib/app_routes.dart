@@ -1,12 +1,13 @@
-import 'package:expense_app1/ui/home_page.dart';
-import 'package:expense_app1/ui/insert_expense_page.dart';
+import 'package:expense_app1/ui/bottom_nav_main_page.dart';
+import 'package:expense_app1/ui/bottom_nav_pages/home_page.dart';
+import 'package:expense_app1/ui/bottom_nav_pages/insert_expense_page.dart';
+import 'package:expense_app1/ui/bottom_nav_pages/notification_page.dart';
+import 'package:expense_app1/ui/bottom_nav_pages/profile_page.dart';
+import 'package:expense_app1/ui/bottom_nav_pages/second_page.dart';
 import 'package:expense_app1/ui/login_page.dart';
-import 'package:expense_app1/ui/notification_page.dart';
-import 'package:expense_app1/ui/preview_page.dart';
-import 'package:expense_app1/ui/preview_page_second.dart';
-import 'package:expense_app1/ui/preview_page_third.dart';
-import 'package:expense_app1/ui/profile_page.dart';
-import 'package:expense_app1/ui/second_page.dart';
+import 'package:expense_app1/ui/preview_pages/preview_page.dart';
+import 'package:expense_app1/ui/preview_pages/preview_page_second.dart';
+import 'package:expense_app1/ui/preview_pages/preview_page_third.dart';
 import 'package:expense_app1/ui/signup_page.dart';
 import 'package:expense_app1/ui/splash_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String route_splash = "/";
   static const String route_login = "/login";
   static const String route_signup = "/signup";
+  static const String route_bottom_nav_main = "/bottom_nav_main";
 
   static const String route_preview = "/preview";
   static const String route_preview_second = "/preview_second";
@@ -31,6 +33,7 @@ class AppRoutes {
     route_splash : (context) => SplashPage(),
     route_login : (context) => LoginPage(),
     route_signup: (context) => SignupPage(),
+    route_bottom_nav_main: (context) => BottomNavMainPage(),
     route_preview : (context) => PreviewPage(),
     route_preview_second : (context) => PreviewPageSecond(),
     route_preview_third : (context) => PreviewPageThird(),

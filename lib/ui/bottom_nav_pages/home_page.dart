@@ -4,115 +4,6 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget{
 
-/*
-  List<Map<String, dynamic>> expenseDataDetails = [
-    {
-      "title" : "Shop",
-      "desc" : "Buy new clothes",
-      "total" : "-\$90",
-      "icon" : CupertinoIcons.shopping_cart,
-    },
-    {
-      "title" : "Electronic",
-      "desc" : "Buy new iphone 14",
-      "total" : "-\$1290",
-      "icon" : Icons.smartphone,
-    },
-
-  ];
-*/
-
-  List<Map<String, List>> expenseData = [
-
-    {
-      "Tuesday, 14": [
-        {
-          "title": "Shop",
-          "desc": "Buy new clothes",
-          "total": "-\$90",
-          "icon": CupertinoIcons.shopping_cart,
-        },
-        {
-          "title": "Electronic",
-          "desc": "Buy new iphone 14",
-          "total": "-\$1290",
-          "icon": Icons.smartphone,
-        },
-      ]
-    },
-
-    {
-      "Monday, 13": [
-        {
-          "title": "Transportation",
-          "desc": "Trip to Malang",
-          "total": "-\$60",
-          "icon": Icons.directions_car,
-        },
-      ]
-    },
-
-    {
-      "Sunday, 12": [
-        {
-          "title": "Groceries",
-          "desc": "Weekly shopping",
-          "total": "-\$180",
-          "icon": Icons.shopping_basket,
-        },
-        {
-          "title": "Fuel",
-          "desc": "Petrol refill",
-          "total": "-\$70",
-          "icon": Icons.local_gas_station,
-        },
-      ]
-    },
-
-    {
-      "Saturday, 11": [
-        {
-          "title": "Netflix",
-          "desc": "Monthly subscription",
-          "total": "-\$15",
-          "icon": Icons.tv,
-        },
-        {
-          "title": "Gym",
-          "desc": "Membership renewal",
-          "total": "-\$45",
-          "icon": Icons.fitness_center,
-        },
-        {
-          "title": "Medicine",
-          "desc": "Pharmacy",
-          "total": "-\$28",
-          "icon": Icons.local_hospital,
-        },
-      ]
-    },
-
-    {
-      "Friday, 10": [
-        {
-          "title": "Electricity",
-          "desc": "Monthly bill",
-          "total": "-\$120",
-          "icon": Icons.electric_bolt,
-        },
-        {
-          "title": "Internet",
-          "desc": "Broadband recharge",
-          "total": "-\$40",
-          "icon": Icons.wifi,
-        },
-      ]
-    }
-
-  ];
-
-  //int index = 4;
-
   @override
   Widget build(BuildContext context) {
 
@@ -126,15 +17,13 @@ class HomePage extends StatelessWidget{
               children: [
                 titleAndSearch(),
                 SizedBox(height: 20,),
-                profileName(),
+                profileName(context),
                 SizedBox(height: 20,),
                 cardInfo(),
                 SizedBox(height: 20,),
                 textExpenseList(),
                 SizedBox(height: 10,),
                 expenseList(),
-                Divider(),
-                lastBtn(context)
               ],
             ),
           ),
@@ -166,10 +55,14 @@ class HomePage extends StatelessWidget{
   }
 
   ///...profile pic and this month part 2
-  Widget profileName(){
+  Widget profileName(context){
     return Row(
       children: [
-        Icon(Icons.account_circle, size: 50, color: Colors.black54),
+        InkWell(
+          onTap: (){
+            Navigator.pushNamed(context, AppRoutes.route_profile_page);
+          },
+            child: Icon(Icons.account_circle, size: 50, color: Colors.black54)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -274,24 +167,14 @@ class HomePage extends StatelessWidget{
         ),));
   }
 
-  ///...ExpenseList 5
+  ///...ExpenseList part 5
   Widget expenseList(){
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: expenseData.length,
+      itemCount: 2,
       itemBuilder: (c , index){
 
-        //print(index);
-
-        List<String> dates = expenseData.map((element){
-          return element.keys.first;
-        }).toList();
-
-        var shortListData = expenseData[index][dates[index]];
-        //print(shortListData);
-
-        //print(dates);
 
         return Container(
           margin: EdgeInsets.only(bottom: 20),
@@ -308,7 +191,7 @@ class HomePage extends StatelessWidget{
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(dates[index],style: TextStyle(
+                  Text("Tuesday, 14",style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w500
                   ),),
@@ -324,7 +207,7 @@ class HomePage extends StatelessWidget{
               ListView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: shortListData!.length,
+                itemCount: 2,
                   itemBuilder: (context , index){
 
                     return Row(
@@ -332,15 +215,15 @@ class HomePage extends StatelessWidget{
                     Container(
                         padding: EdgeInsets.all(8),
                         color: Colors.blue.shade100,
-                        child: Icon(shortListData[index]["icon"])),
+                        child: Icon(CupertinoIcons.cart)),
                     SizedBox(width: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(shortListData[index]["title"],style: TextStyle(
+                        Text("Shop",style: TextStyle(
                           fontSize: 20,
                         ),),
-                        Text(shortListData[index]["desc"],style: TextStyle(
+                        Text("Buy new clothes",style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey
                         ),),
@@ -367,8 +250,13 @@ class HomePage extends StatelessWidget{
     );
   }
 
-  ///...lastBtns part 6
-  Widget lastBtn(context){
+
+}
+
+
+
+///...lastBtns part 6
+/*Widget lastBtn(context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -417,9 +305,7 @@ class HomePage extends StatelessWidget{
 
       ],
     );
-  }
-
-}
+  }*/
 
 
 
