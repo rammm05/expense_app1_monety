@@ -2,7 +2,7 @@ import 'package:expense_app1/db_helper.dart';
 
 class ExpenseModel {
   int? id;
-  int moneySpent;
+  int moneySpent , moneyDebit; //0 -> credited , 1-> debited
   String type, desc, date;
 
   ExpenseModel({
@@ -10,6 +10,7 @@ class ExpenseModel {
     required this.desc,
     required this.moneySpent,
     required this.date,
+    required this.moneyDebit,
     this.id
   });
 
@@ -20,6 +21,7 @@ factory ExpenseModel.fromMap(Map<String, dynamic> map){
       desc: map[DbHelper.EXPENSE_DESC],
       moneySpent: map[DbHelper.EXPENSE_MONEY_SPENT],
       date: map[DbHelper.EXPENSE_DATE],
+      moneyDebit: map[DbHelper.EXPENSE_DEBIT],
       id: map[DbHelper.EXPENSE_ID]
   );
 }
@@ -31,9 +33,8 @@ Map<String, dynamic> toMap(){
     DbHelper.EXPENSE_DESC : desc,
     DbHelper.EXPENSE_MONEY_SPENT : moneySpent,
     DbHelper.EXPENSE_DATE : date,
+    DbHelper.EXPENSE_DEBIT : moneyDebit,
   };
-
-
 }
 
 }

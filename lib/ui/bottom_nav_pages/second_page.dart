@@ -1,98 +1,13 @@
+import 'package:expense_app1/cubit/expense_cubit.dart';
+import 'package:expense_app1/cubit/expense_state.dart';
+import 'package:expense_app1/expense_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../app_routes.dart';
 
 class SecondPage extends StatelessWidget{
-
-  List<Map<String, List>> expenseData = [
-
-    {
-      "Tuesday, 14": [
-        {
-          "title": "Shop",
-          "desc": "Buy new clothes",
-          "total": "-\$90",
-          "icon": CupertinoIcons.shopping_cart,
-        },
-        {
-          "title": "Electronic",
-          "desc": "Buy new iphone 14",
-          "total": "-\$1290",
-          "icon": Icons.smartphone,
-        },
-      ]
-    },
-
-    {
-      "Monday, 13": [
-        {
-          "title": "Transportation",
-          "desc": "Trip to Malang",
-          "total": "-\$60",
-          "icon": Icons.directions_car,
-        },
-      ]
-    },
-
-    {
-      "Sunday, 12": [
-        {
-          "title": "Groceries",
-          "desc": "Weekly shopping",
-          "total": "-\$180",
-          "icon": Icons.shopping_basket,
-        },
-        {
-          "title": "Fuel",
-          "desc": "Petrol refill",
-          "total": "-\$70",
-          "icon": Icons.local_gas_station,
-        },
-      ]
-    },
-
-    {
-      "Saturday, 11": [
-        {
-          "title": "Netflix",
-          "desc": "Monthly subscription",
-          "total": "-\$15",
-          "icon": Icons.tv,
-        },
-        {
-          "title": "Gym",
-          "desc": "Membership renewal",
-          "total": "-\$45",
-          "icon": Icons.fitness_center,
-        },
-        {
-          "title": "Medicine",
-          "desc": "Pharmacy",
-          "total": "-\$28",
-          "icon": Icons.local_hospital,
-        },
-      ]
-    },
-
-    {
-      "Friday, 10": [
-        {
-          "title": "Electricity",
-          "desc": "Monthly bill",
-          "total": "-\$120",
-          "icon": Icons.electric_bolt,
-        },
-        {
-          "title": "Internet",
-          "desc": "Broadband recharge",
-          "total": "-\$40",
-          "icon": Icons.wifi,
-        },
-      ]
-    }
-
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -339,62 +254,70 @@ class SecondPage extends StatelessWidget{
   );
 
   ///...grid part ..9
-  Widget gridPart() => GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 250,
-          childAspectRatio: 2/1,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20
+  Widget gridPart(){
+    return BlocBuilder<ExpenseCubit, ExpenseState>(builder: (context, state){
 
-      ),itemCount: expenseData.length,
-      itemBuilder: (context, index){
+      List<ExpenseModel> expenseList = state.expenseList;
 
+      return GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 250,
+              childAspectRatio: 2/1,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 20
 
-        return Container(
-          decoration: BoxDecoration(
-            //color: Colors.red,
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(5)
-          ),
-          child: Row(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 15),
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.green.shade200,
-                ),
-                child: Icon(expenseData[index][expenseData[index].keys.first]![0]["icon"]),
+          ),itemCount: expenseList.length,
+          itemBuilder: (context, index){
+
+            ExpenseModel currExpense = expenseList[index];
+
+            return Container(
+              decoration: BoxDecoration(
+                //color: Colors.red,
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5)
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(expenseData[index][expenseData[index].keys.first]![0]["title"], style:
-                    TextStyle(
-                        fontSize: 20
-                    ),overflow: TextOverflow.ellipsis, maxLines: 1,
+              child: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10 , vertical: 15),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.green.shade200,
                     ),
-                    Text(expenseData[index][expenseData[index].keys.first]![0]["total"], style:
-                    TextStyle(
-                        color: Colors.pinkAccent,
-                        fontSize: 20
-                    ),),
+                    child: Icon(CupertinoIcons.cart),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(currExpense.type, style:
+                        TextStyle(
+                            fontSize: 20
+                        ),overflow: TextOverflow.ellipsis, maxLines: 1,
+                        ),
+                        Text("-${currExpense.moneySpent}", style:
+                        TextStyle(
+                            color: Colors.pinkAccent,
+                            fontSize: 20
+                        ),),
 
 
-                  ],
-                ),
-              )
-            ],
-          ),
-        );
-      }
-  );
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
+      );
+    });
+  }
 
 
 }

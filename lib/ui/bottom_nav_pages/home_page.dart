@@ -1,8 +1,23 @@
 import 'package:expense_app1/app_routes.dart';
+import 'package:expense_app1/cubit/expense_cubit.dart';
+import 'package:expense_app1/cubit/expense_state.dart';
+import 'package:expense_app1/expense_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget{
+class HomePage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage>{
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ExpenseCubit>().fetchAllExpense();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +28,6 @@ class HomePage extends StatelessWidget{
           child: Padding(
             padding: EdgeInsetsGeometry.all(20),
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 titleAndSearch(),
                 SizedBox(height: 20,),
@@ -31,8 +45,8 @@ class HomePage extends StatelessWidget{
       ),
     );
   }
-  
-  
+
+
   ///...title and search part 1
   Widget titleAndSearch(){
     return Row(
@@ -59,9 +73,9 @@ class HomePage extends StatelessWidget{
     return Row(
       children: [
         InkWell(
-          onTap: (){
-            Navigator.pushNamed(context, AppRoutes.route_profile_page);
-          },
+            onTap: (){
+              Navigator.pushNamed(context, AppRoutes.route_profile_page);
+            },
             child: Icon(Icons.account_circle, size: 50, color: Colors.black54)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,7 +164,7 @@ class HomePage extends StatelessWidget{
                 Expanded(
                   flex: 2,
                   child: Image.asset("assets/images/bg_monety_preview.png",height: 120,),
-                  ),
+                ),
               ],
             ),
           ),
@@ -169,6 +183,84 @@ class HomePage extends StatelessWidget{
 
   ///...ExpenseList part 5
   Widget expenseList(){
+    return BlocBuilder<ExpenseCubit, ExpenseState> (
+        builder: (context, state){
+
+          List<ExpenseModel> expenseList = state.expenseList;
+          print(expenseList);
+
+          return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: state.expenseList.length,
+                    itemBuilder: (context , index){
+
+                      ExpenseModel currExpense = expenseList[index];
+
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(5)
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text("${currExpense.date}",style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500
+                                ),),
+                                Text("-\$1380",style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500
+                                ),),
+
+                              ],
+                            ),
+                            Divider(),
+                            Row(
+                              children: [
+                                Container(
+                                    padding: EdgeInsets.all(8),
+                                    color: Colors.blue.shade100,
+                                    child: Icon(CupertinoIcons.cart)),
+                                SizedBox(width: 10,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("${currExpense.type}",style: TextStyle(
+                                      fontSize: 20,
+                                    ),),
+                                    Text("${currExpense.desc}",style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.grey
+                                    ),),
+                                    SizedBox(height: 5,)
+
+
+                                  ],
+                                ),
+                                Spacer(),
+                                Text("-${currExpense.moneySpent}",style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.pink.shade300
+                                ),),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+          ) ;
+    });
+  }
+
+  ///...ExpenseList1 demo
+  Widget expenseList1(){
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -205,42 +297,42 @@ class HomePage extends StatelessWidget{
               ),
               Divider(),
               ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 2,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 2,
                   itemBuilder: (context , index){
 
                     return Row(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.all(8),
-                        color: Colors.blue.shade100,
-                        child: Icon(CupertinoIcons.cart)),
-                    SizedBox(width: 10,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Shop",style: TextStyle(
-                          fontSize: 20,
-                        ),),
-                        Text("Buy new clothes",style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey
-                        ),),
-                        SizedBox(height: 5,)
+                        Container(
+                            padding: EdgeInsets.all(8),
+                            color: Colors.blue.shade100,
+                            child: Icon(CupertinoIcons.cart)),
+                        SizedBox(width: 10,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Shop",style: TextStyle(
+                              fontSize: 20,
+                            ),),
+                            Text("Buy new clothes",style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey
+                            ),),
+                            SizedBox(height: 5,)
 
 
+                          ],
+                        ),
+                        Spacer(),
+                        Text("-\$90",style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.pink.shade300
+                        ),),
                       ],
-                    ),
-                    Spacer(),
-                    Text("-\$90",style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.pink.shade300
-                    ),),
-                  ],
-                );
-              }),
+                    );
+                  }),
 
             ],
           ),
@@ -249,7 +341,6 @@ class HomePage extends StatelessWidget{
 
     );
   }
-
 
 }
 

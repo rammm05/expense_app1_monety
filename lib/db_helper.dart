@@ -9,7 +9,7 @@ class DbHelper {
   //private constructor
   DbHelper._();
 
-  DbHelper getInstance() => DbHelper._();
+  static DbHelper getInstance() => DbHelper._();
 
   Database? mDB;
 
@@ -21,8 +21,10 @@ class DbHelper {
   static const String EXPENSE_DESC = "expense_desc";
   static const String EXPENSE_MONEY_SPENT = "expense_money_spent";
   static const String EXPENSE_DATE = "expense_date";
+  static const String EXPENSE_DEBIT = "expense_debit";
 
   static const String USER_TABLE = "user_table";
+  static const String USER_INDEX = "user_index";
   static const String USER_ID = "user_id";
   static const String USER_PASSWORD = "user_password";
 
@@ -38,14 +40,14 @@ class DbHelper {
 
     return openDatabase(path, version: 1, onCreate: (db , path){
       //creating db
-      db.execute(" create table $EXPENSE_TABLE ( $EXPENSE_ID integer primary key autoincrement, $EXPENSE_TYPE text not null, $EXPENSE_DESC text not null, $EXPENSE_MONEY_SPENT integer not null, $EXPENSE_DATE text not null) ");
-      db.execute(" create table $USER_TABLE ( $USER_ID integer primary key, $USER_PASSWORD text not null) ");
+      db.execute(" create table $EXPENSE_TABLE ( $EXPENSE_ID integer primary key autoincrement, $EXPENSE_TYPE text not null, $EXPENSE_DESC text not null, $EXPENSE_MONEY_SPENT integer not null, $EXPENSE_DATE text not null, $EXPENSE_DEBIT integer not null ) ");
+      db.execute(" create table $USER_TABLE ( $USER_INDEX integer primary key autoincrement, $USER_ID text primary key, $USER_PASSWORD text not null) ");
     });
   }
 
   /*Future<bool> insertIDP() async {
     Database db = await initDB();
-    int rowsEffected = db.insert(USER_TABLE, values);
+    int rowsEffected = await db.insert(USER_TABLE, values);
     return rowsEffected>0;
   }*/
 
