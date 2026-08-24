@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_routes.dart';
 
@@ -93,7 +94,11 @@ class PreviewPageThird extends StatelessWidget{
         child: SizedBox(
           width: 70,
           height: 70,
-          child: FloatingActionButton(onPressed: (){
+          child: FloatingActionButton(onPressed: () async {
+
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("isOpened", true);
+
             Navigator.pushReplacementNamed(context, AppRoutes.route_login);
           },
             backgroundColor: Colors.pink.shade200,

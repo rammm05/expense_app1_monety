@@ -1,6 +1,3 @@
-
-
-
 import 'package:expense_app1/expense_model.dart';
 
 class ExpenseState {
