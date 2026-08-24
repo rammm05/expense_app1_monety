@@ -53,7 +53,9 @@ class LoginPage extends StatelessWidget{
               ),
             ),
             SizedBox(height: 30,),
-            OutlinedButton(onPressed: (){},
+            OutlinedButton(onPressed: (){
+              Navigator.pushReplacementNamed(context, AppRoutes.route_bottom_nav_main);
+            },
               child: Text("Login", style: TextStyle(fontSize: 25),),),
             SizedBox(height: 150,),
             Row(
