@@ -1,6 +1,6 @@
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
-import 'package:expense_app1/expense_model.dart';
+import 'package:expense_app1/models/expense_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

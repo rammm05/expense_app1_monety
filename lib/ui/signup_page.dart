@@ -47,7 +47,20 @@ class SignupPage extends StatelessWidget{
                       borderSide: BorderSide(color: Colors.black)
                   ),
                   hintText: "Create password",
-                  labelText: "Password",
+                  labelText: "Create password",
+                  fillColor: Colors.deepPurple.shade100,
+                  filled: true
+              ),
+            ),
+            SizedBox(height: 20,),
+            TextField(
+              controller: passwordControlller,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)
+                  ),
+                  hintText: "Confirm password",
+                  labelText: "Confirm Password",
                   fillColor: Colors.deepPurple.shade100,
                   filled: true
               ),

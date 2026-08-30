@@ -1,4 +1,4 @@
-import 'package:expense_app1/expense_model.dart';
+import 'package:expense_app1/models/expense_model.dart';
 
 class ExpenseState {
   List<ExpenseModel> expenseList;

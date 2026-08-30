@@ -1,6 +1,6 @@
 import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/db_helper.dart';
-import 'package:expense_app1/expense_model.dart';
+import 'package:expense_app1/models/expense_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ExpenseCubit extends Cubit<ExpenseState>{

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:expense_app1/expense_model.dart';
+import 'package:expense_app1/models/expense_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -24,8 +24,8 @@ class DbHelper {
   static const String EXPENSE_DEBIT = "expense_debit";
 
   static const String USER_TABLE = "user_table";
-  static const String USER_INDEX = "user_index";
   static const String USER_ID = "user_id";
+  static const String USER_NAME = "user_name";
   static const String USER_PASSWORD = "user_password";
 
 
@@ -41,7 +41,7 @@ class DbHelper {
     return openDatabase(path, version: 1, onCreate: (db , path){
       //creating db
       db.execute(" create table $EXPENSE_TABLE ( $EXPENSE_ID integer primary key autoincrement, $EXPENSE_TYPE text not null, $EXPENSE_DESC text not null, $EXPENSE_MONEY_SPENT integer not null, $EXPENSE_DATE text not null, $EXPENSE_DEBIT integer not null ) ");
-      db.execute(" create table $USER_TABLE ( $USER_INDEX integer primary key autoincrement, $USER_ID text primary key, $USER_PASSWORD text not null) ");
+      db.execute(" create table $USER_TABLE ( $USER_ID integer primary key autoincrement, $USER_NAME text primary key, $USER_PASSWORD text not null) ");
     });
   }
 
