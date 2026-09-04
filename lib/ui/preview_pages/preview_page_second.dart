@@ -74,11 +74,9 @@ class PreviewPageSecond extends StatelessWidget{
             ]),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(),
-        image: DecorationImage(image: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR35CZUPvcdrkE0sGCzF6Iv38zweimjTmbEbX4cfqZlUA&s=10"), fit: BoxFit.cover)
       ),
-      child: Align(
-        alignment: Alignment(0, .8),
-          child: Text("Next", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)),
+      child: Center(
+          child: Text("2", style: TextStyle(fontSize: 250, fontWeight: FontWeight.bold),)),
     );
 
   }

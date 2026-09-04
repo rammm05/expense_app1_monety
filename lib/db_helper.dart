@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:expense_app1/models/expense_model.dart';
+import 'package:expense_app1/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -67,6 +68,25 @@ class DbHelper {
       mExpense.add(ExpenseModel.fromMap(eachData));
     }
     return mExpense;
+  }
+  
+  Future<bool> insertUser({required UserModel newUser}) async {
+    Database db = await initDB();
+    int rowsEffected = await db.insert(USER_TABLE, newUser.toMap());
+    return rowsEffected>0;
+  }
+
+  Future<List<UserModel>> fetchUser() async {
+    Database db = await initDB();
+    List<Map<String, dynamic>> data = await db.query(USER_TABLE);
+
+    List<UserModel> userData = [];
+    for(Map<String, dynamic> eachUser in data){
+      userData.add(UserModel.fromMap(eachUser));
+    }
+    return userData;
+
+
   }
 
 }

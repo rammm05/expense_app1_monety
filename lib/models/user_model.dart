@@ -3,7 +3,11 @@ import 'package:expense_app1/db_helper.dart';
 class UserModel {
   String userName, pass;
   int? id;
-  UserModel({required this.pass, required this.userName, this.id});
+  UserModel({
+    required this.pass,
+    required this.userName,
+    this.id
+  });
 
   //fromMapTOModel
   factory UserModel.fromMap(Map<String, dynamic>map){
@@ -17,7 +21,6 @@ class UserModel {
   //fromModelToMap
   Map<String, dynamic> toMap(){
     return {
-      DbHelper.USER_ID : id,
       DbHelper.USER_PASSWORD : pass,
       DbHelper.USER_NAME : userName,
     };

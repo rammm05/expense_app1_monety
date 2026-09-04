@@ -3,6 +3,7 @@ import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/models/expense_model.dart';
 import 'package:expense_app1/ui/bottom_nav_pages/insert_expense_page.dart';
+import 'package:expense_app1/ui/bottom_nav_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,12 +69,14 @@ class HomePageState extends State<HomePage> {
   }
 
   ///...profile pic and this month part 2
-  Widget profileName(context) {
+  Widget profileName(BuildContext context) {
     return Row(
       children: [
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, AppRoutes.route_profile_page);
+            context.read<BottomNavProvider>().index = 4;
+
+
           },
           child: Icon(Icons.account_circle, size: 50, color: Colors.black54),
         ),

@@ -75,8 +75,9 @@ class PreviewPageThird extends StatelessWidget{
             ]),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(),
-        image: DecorationImage(image: NetworkImage("https://cdn.europosters.eu/image/1300/8939.jpg"),fit: BoxFit.fill)
       ),
+      child: Center(
+          child: Text("3", style: TextStyle(fontSize: 250, fontWeight: FontWeight.bold),)),
     );
 
   }

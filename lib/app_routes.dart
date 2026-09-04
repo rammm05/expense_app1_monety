@@ -4,6 +4,7 @@ import 'package:expense_app1/ui/bottom_nav_pages/insert_expense_page.dart';
 import 'package:expense_app1/ui/bottom_nav_pages/notification_page.dart';
 import 'package:expense_app1/ui/bottom_nav_pages/profile_page.dart';
 import 'package:expense_app1/ui/bottom_nav_pages/second_page.dart';
+import 'package:expense_app1/ui/bottom_nav_provider.dart';
 import 'package:expense_app1/ui/login_page.dart';
 import 'package:expense_app1/ui/preview_pages/preview_page.dart';
 import 'package:expense_app1/ui/preview_pages/preview_page_second.dart';
@@ -11,6 +12,7 @@ import 'package:expense_app1/ui/preview_pages/preview_page_third.dart';
 import 'package:expense_app1/ui/signup_page.dart';
 import 'package:expense_app1/ui/splash_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class AppRoutes {
 

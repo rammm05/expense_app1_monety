@@ -9,27 +9,27 @@ class SplashPage extends StatelessWidget{
   bool isOpened = false;
   //.. splashPage & preview3rdPage
 
-  /*isOpenStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    isOpened =  prefs.get("isOpened") ?? false;
-    print("status : $isOpened");
-
-  }*/
 
   @override
   Widget build(BuildContext context) {
 
-    //isOpenStatus();
 
-    Timer(Duration(seconds: 4), (){
+    Timer(Duration(seconds: 4), () async {
+      //isOpenStatus();
 
-      /*if(isOpened){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      isOpened =  prefs.getBool("isOpened") ?? false;
+      print("status : $isOpened");
+
+      if(isOpened){
         Navigator.pushReplacementNamed(context, AppRoutes.route_login);
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.route_preview);
-      }*/
+      }
 
-      Navigator.pushReplacementNamed(context, AppRoutes.route_preview);
+
+
+      //Navigator.pushReplacementNamed(context, AppRoutes.route_preview);
 
     });
 
