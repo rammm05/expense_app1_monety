@@ -38,7 +38,45 @@ class BottomNavMainPageState extends State<BottomNavMainPage>{
       builder: (context, provider, child) {
         return Scaffold(
           body: navPages[provider.index],
-          bottomNavigationBar: NavigationBar(
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.grey.shade50,
+              selectedItemColor: Colors.pinkAccent.shade200,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              unselectedItemColor: Colors.grey,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(provider.index == 0 ? Icons.home: Icons.home_outlined, size: 28,), label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.auto_graph_outlined, size: 28,),
+                    label: "Graph"),
+                BottomNavigationBarItem(
+                    icon: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.pinkAccent.shade200
+                      ),
+                      child: Icon(Icons.add, color: Colors.white, size: 21,),
+                    ), label: "Add"),
+                BottomNavigationBarItem(
+                    icon: Icon( provider.index == 3 ? Icons.notifications : Icons.notifications_outlined, size: 28,),
+                    label: "Notifications"),
+                BottomNavigationBarItem(
+                    icon: Icon( provider.index == 4 ? Icons.account_circle : Icons.account_circle_outlined, size: 28,),
+                    label: "Profile"),
+
+              ],
+            currentIndex: provider.index,
+            onTap: (value){
+              context.read<BottomNavProvider>().index = value;
+            },
+
+          )
+
+          /*NavigationBar(
 
               destinations: [
                 NavigationDestination(
@@ -69,7 +107,7 @@ class BottomNavMainPageState extends State<BottomNavMainPage>{
             onDestinationSelected: (value){
               context.read<BottomNavProvider> ().index = value;
             },
-          ),
+          )*/
         );
       }
     );

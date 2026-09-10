@@ -153,7 +153,7 @@ class SecondPage extends StatelessWidget{
               Text("Week", style: TextStyle(
                   fontSize: 20
               ),),
-              Icon(Icons.arrow_downward_sharp)
+              Icon(Icons.expand_more)
             ],
           )
       )

@@ -3,78 +3,78 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
 
-  static const List<Map<String, dynamic>> types = [
+  static const List<Map<String, dynamic>> expenseCat = [
     {
       "type": "Shopping",
-      "icon": Icon(CupertinoIcons.cart),
+      "icon": CupertinoIcons.cart,
     },
     {
       "type": "Electronics",
-      "icon": Icon(Icons.smartphone),
+      "icon": Icons.smartphone,
     },
     {
       "type": "Food",
-      "icon": Icon(Icons.fastfood),
+      "icon": Icons.fastfood,
     },
     {
       "type": "Travel",
-      "icon": Icon(CupertinoIcons.car_detailed),
+      "icon": CupertinoIcons.car_detailed,
     },
     {
       "type": "Fuel",
-      "icon": Icon(Icons.local_gas_station),
+      "icon": Icons.local_gas_station,
     },
     {
       "type": "Bills",
-      "icon": Icon(CupertinoIcons.doc_text),
+      "icon": CupertinoIcons.doc_text,
     },
     {
       "type": "Rent",
-      "icon": Icon(Icons.home),
+      "icon": Icons.home,
     },
     {
       "type": "Entertainment",
-      "icon": Icon(Icons.movie),
+      "icon": Icons.movie,
     },
     {
       "type": "Health",
-      "icon": Icon(Icons.medical_services),
+      "icon": Icons.medical_services,
     },
     {
       "type": "Education",
-      "icon": Icon(Icons.school),
+      "icon": Icons.school,
     },
     {
       "type": "Groceries",
-      "icon": Icon(Icons.shopping_basket),
+      "icon": Icons.shopping_basket,
     },
     {
       "type": "Clothing",
-      "icon": Icon(Icons.checkroom),
+      "icon": Icons.checkroom,
     },
     {
       "type": "Restaurant",
-      "icon": Icon(Icons.restaurant),
+      "icon": Icons.restaurant,
     },
     {
       "type": "Mobile",
-      "icon": Icon(Icons.phone_android),
+      "icon": Icons.phone_android,
     },
     {
       "type": "Subscriptions",
-      "icon": Icon(Icons.subscriptions),
+      "icon": Icons.subscriptions,
     },
     {
       "type": "Gifts",
-      "icon": Icon(Icons.card_giftcard),
+      "icon": Icons.card_giftcard,
     },
     {
       "type": "Sports",
-      "icon": Icon(Icons.sports_cricket),
+      "icon": Icons.sports_cricket,
     },
     {
       "type": "Other",
-      "icon": Icon(Icons.more_horiz),
+      "icon": Icons.more_horiz,
     },
   ];
 }

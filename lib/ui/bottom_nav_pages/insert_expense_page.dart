@@ -1,3 +1,4 @@
+import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/models/expense_model.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +13,25 @@ class InsertExpensePage extends StatefulWidget{
 
 class InsertExpensePageState extends State<InsertExpensePage>{
 
-  TextEditingController typeController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  TextEditingController moneySpentController = TextEditingController();
+  TextEditingController amtController = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   DateFormat df = DateFormat.yMMMd();
 
+  int selectedCatIndex = -1;
+
   void clearAll(){
-    typeController.clear();
+    titleController.clear();
     descController.text = "";
-    moneySpentController.clear();
+    amtController.clear();
     selectedDate = DateTime.now();
     setState(() {});
   }
 
-  List<String> moneyStatus = ["Credited", "Debited"];
-  int selectedMoneyStatus = 1;
+  List<String> expenseType = ["Debit","Credit"];
+  int selectedExpenseType = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -44,25 +47,41 @@ class InsertExpensePageState extends State<InsertExpensePage>{
         padding: const EdgeInsets.all(20),
         child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              SizedBox(height: 50,),
-              ///...type
-              insertType(),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+                child: OutlinedButton(onPressed: (){
+                  clearAll();
+                }, child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.clear, size: 14,),
+                    SizedBox(width: 10,),
+                    Text("Clear all",style: TextStyle(fontSize: 15),),
+                  ],
+                )),
+              ),
+              SizedBox(height: 11,),
+              ///...title
+              insertTitle(),
+              SizedBox(height: 11,),
               ///...desc
               insertDesc(),
-              SizedBox(height: 30,),
+              SizedBox(height: 11,),
               ///...money spent
               insertMoneySpent(),
-              SizedBox(height: 30,),
+              SizedBox(height: 11,),
               ///...date
               insertDate(),
-              SizedBox(height: 30,),
+              SizedBox(height: 11,),
+              getCat(),
+              SizedBox(height: 11,),
               ///...status
-              insertCreditStatus(),
-              SizedBox(height: 50,),
-              ///...clear and save
-              clearAndSave()
+              insertType(),
+              SizedBox(height: 11,),
+              ///...clear
+              saveBtn()
 
             ],
           ),
@@ -72,11 +91,11 @@ class InsertExpensePageState extends State<InsertExpensePage>{
   }
 
   ///...type
-  Widget insertType(){
+  Widget insertTitle(){
     return TextField(
-      controller: typeController,
+      controller: titleController,
       decoration: InputDecoration(
-          label: Text("Type", style: TextStyle(fontWeight: FontWeight.bold),),
+          label: Text("Title", style: TextStyle(fontWeight: FontWeight.bold),),
           hint: Text("Ex. Shop"),
           border: OutlineInputBorder(),
           filled: true,
@@ -105,7 +124,7 @@ class InsertExpensePageState extends State<InsertExpensePage>{
   ///...money spent
   Widget insertMoneySpent(){
     return TextField(
-      controller: moneySpentController,
+      controller: amtController,
       decoration: InputDecoration(
           label: Text("Money Spent", style: TextStyle(fontWeight: FontWeight.bold),),
           hint: Text("Ex. 1290"),
@@ -118,91 +137,131 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   ///...date
   Widget insertDate(){
-    return Row(
-      children: [
-        Text("Date :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-        SizedBox(width: 10,),
-        Expanded(
-          child: ElevatedButton(
-              onPressed: () async {
-                var date = await showDatePicker(
-                    context: context,
-                    firstDate: DateTime.now().subtract(Duration(days: 731)),
-                    lastDate: DateTime.now(),
-                    currentDate: selectedDate
-                );
-                if(date != null){
-                  selectedDate = date;
-                  setState(() {
+    return SizedBox(
+      height: 55,
+      width: double.infinity,
+      child: ElevatedButton(
+          onPressed: () async {
+            var date = await showDatePicker(
+                context: context,
+                firstDate: DateTime.now().subtract(Duration(days: 731)),
+                lastDate: DateTime.now(),
+                currentDate: selectedDate
+            );
+            if(date != null){
+              selectedDate = date;
+              setState(() {
 
-                  });
-                }
+              });
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.deepPurple.shade100,
+            side: BorderSide(color: Colors.black, width: 1),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+          ),
+          child: Text(df.format(selectedDate),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+          )
+      ),
+    );
+  }
+
+  ///...insertTypeStatus
+  Widget insertType(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(expenseType.length, (index){
+          return RadioMenuButton(value: index,
+              groupValue: selectedExpenseType,
+              onChanged: (value){
+                selectedExpenseType = value!;
+                setState(() {});
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple.shade100,
-              ),
-              child: Text(df.format(selectedDate),
+              child: Text(expenseType[index],));
+
+        })
+    );
+  }
+
+  ///...save
+  Widget saveBtn(){
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(onPressed: (){
+        /*context.read<ExpenseCubit>().addExpense(expense: ExpenseModel(
+            type: typeController.text,
+            desc: descController.text,
+            moneySpent: int.tryParse(moneySpentController.text)  ?? 0,
+            date: selectedDate.millisecondsSinceEpoch.toString(),
+            moneyDebit: selectedMoneyStatus
+        ));*/
+        clearAll();
+      }, child: Text("Save",)),
+    );
+  }
+
+  Widget getCat(){
+    return SizedBox(
+      height: 55,
+      width: double.infinity,
+      child: ElevatedButton(
+          onPressed: (){
+            showModalBottomSheet(context: context, builder: (context){
+              return Container(
+                padding: EdgeInsets.all(21),
+                width: double.infinity,
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
+                    itemCount: AppConstants.expenseCat.length,
+                    itemBuilder: (context, index){
+                  return InkWell(
+                    onTap: (){
+                      selectedCatIndex = index;
+                      setState(() {
+
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Column(
+                      children: [
+                        Icon(AppConstants.expenseCat[index]["icon"], size: 40,),
+                        Text(AppConstants.expenseCat[index]["type"]),
+                      ],
+                    ),
+                  );
+                }),
+              );
+            });
+
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple.shade100,
+              side: BorderSide(color: Colors.black, width: 1),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+          ),
+          child: selectedCatIndex < 0 ? Text("Choose Category",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+          ) : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(AppConstants.expenseCat[selectedCatIndex]["icon"]),
+              Text("- ${AppConstants.expenseCat[selectedCatIndex]["type"]}",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, fontSize: 18),
-              )
-          ),
-        ),
-      ],
+                    color: Colors.black))
+            ],
+          )
+      ),
     );
   }
 
-  ///...status
-  Widget insertCreditStatus(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text("Status :", style: TextStyle(fontWeight: FontWeight.bold,
-            fontSize: 20
-        ),),
-        Row(
-            children: List.generate(moneyStatus.length, (index){
-              return RadioMenuButton(value: index,
-                  groupValue: selectedMoneyStatus,
-                  onChanged: (value){
-                    selectedMoneyStatus = value!;
-                    setState(() {});
-                  },
-                  child: Text(moneyStatus[index],
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                    ),));
 
-            })
-        ),
-      ],
-
-    );
-  }
-
-  ///...clear and save
-  Widget clearAndSave(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        OutlinedButton(onPressed: (){
-          clearAll();
-        }, child: Text("Clear", style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),)),
-        SizedBox(width: 30,),
-        OutlinedButton(onPressed: (){
-          context.read<ExpenseCubit>().addExpense(expense: ExpenseModel(
-              type: typeController.text,
-              desc: descController.text,
-              moneySpent: int.tryParse(moneySpentController.text)  ?? 0,
-              date: selectedDate.millisecondsSinceEpoch.toString(),
-              moneyDebit: selectedMoneyStatus
-          ));
-          clearAll();
-        }, child: Text("Save", style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),)),
-      ],
-    );
-  }
 
 
 
