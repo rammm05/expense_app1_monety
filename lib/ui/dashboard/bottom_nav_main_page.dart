@@ -1,12 +1,14 @@
-import 'package:expense_app1/ui/bottom_nav_pages/home_page.dart';
-import 'package:expense_app1/ui/bottom_nav_pages/insert_expense_page.dart';
-import 'package:expense_app1/ui/bottom_nav_pages/notification_page.dart';
-import 'package:expense_app1/ui/bottom_nav_pages/profile_page.dart';
-import 'package:expense_app1/ui/bottom_nav_pages/second_page.dart';
-import 'package:expense_app1/ui/bottom_nav_provider.dart';
+
+import 'package:expense_app1/ui/dashboard/provider/bottom_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+
+import 'bottom_nav_pages/home_page.dart';
+import 'bottom_nav_pages/insert_expense_page.dart';
+import 'bottom_nav_pages/notification_page.dart';
+import 'bottom_nav_pages/profile_page.dart';
+import 'bottom_nav_pages/second_page.dart';
 
 class BottomNavMainPage extends StatefulWidget{
   @override
@@ -29,7 +31,7 @@ class BottomNavMainPageState extends State<BottomNavMainPage>{
   @override
   void initState() {
     super.initState();
-    context.read<BottomNavProvider>().index = 0;
+    //context.read<BottomNavProvider>().index = 0;
   }
 
   @override

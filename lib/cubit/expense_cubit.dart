@@ -9,14 +9,14 @@ class ExpenseCubit extends Cubit<ExpenseState>{
   ExpenseCubit({required this.dbHelper}) : super(ExpenseState(expenseList: []));
 
   addExpense({required ExpenseModel expense}) async {
-    bool isAdded = await dbHelper.insertData(expense: expense);
+    bool isAdded = await dbHelper.addExpense(expense: expense);
     if(isAdded){
       fetchAllExpense();
     }
   }
 
   fetchAllExpense()async{
-    List<ExpenseModel> expenseData = await dbHelper.fetchData();
+    List<ExpenseModel> expenseData = await dbHelper.fetchExpenses();
     emit(ExpenseState(expenseList: expenseData));
   }
 

@@ -1,10 +1,10 @@
 import 'package:expense_app1/app_routes.dart';
-import 'package:expense_app1/cubit/user_cubit.dart';
-import 'package:expense_app1/cubit/user_state.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_state.dart';
 import 'package:expense_app1/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 45),
         child: Column(
           children: [
-            Expanded(
+            /*Expanded(
               child: BlocBuilder<UserCubit, UserState>(
                 builder: (context, state){
 
@@ -50,11 +50,13 @@ class ProfilePage extends StatelessWidget {
                       });
                 },
               ),
-            ),
+            ),*/
             SizedBox(
               height: 70,
                 width: double.infinity,
-                child: OutlinedButton(onPressed: (){
+                child: OutlinedButton(onPressed: () async {
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.remove("userId");
                   Navigator.pushReplacementNamed(context, AppRoutes.route_login);
                 }, child: Text("Log Out", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),))),
           ],

@@ -1,13 +1,14 @@
-import 'package:expense_app1/app_routes.dart';
+import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/models/expense_model.dart';
-import 'package:expense_app1/ui/bottom_nav_pages/insert_expense_page.dart';
-import 'package:expense_app1/ui/bottom_nav_provider.dart';
+import 'package:expense_app1/ui/dashboard/provider/bottom_nav_provider.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,10 +18,24 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   DateFormat df = DateFormat("EEEE dd");
 
+  int? userId;
+  String? userName;
+
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt("userId");
+    userName = await context.read<UserCubit>().getUser(userId!);
+    setState(() {
+
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     context.read<ExpenseCubit>().fetchAllExpense();
+    getUserName();
+
   }
 
   @override
@@ -88,7 +103,9 @@ class HomePageState extends State<HomePage> {
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             Text(
-              "Blaszczykowski",
+              userName == null
+                  ? "Blaszczykowski"
+                  : "${userName}",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],
@@ -196,8 +213,6 @@ class HomePageState extends State<HomePage> {
     return BlocBuilder<ExpenseCubit, ExpenseState>(
       builder: (context, state) {
         List<ExpenseModel> expenseList = state.expenseList;
-        //List<ExpenseModel> expenseList = [];
-        print(expenseList);
 
         return expenseList.isNotEmpty
             ? ListView.builder(
@@ -205,6 +220,7 @@ class HomePageState extends State<HomePage> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: state.expenseList.length,
                 itemBuilder: (context, index) {
+
                   ExpenseModel currExpense = expenseList[index];
 
                   return Container(
@@ -220,7 +236,7 @@ class HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "${df.format(DateTime.fromMillisecondsSinceEpoch(int.parse(currExpense.date)))}",
+                              "${df.format(DateTime.fromMillisecondsSinceEpoch(int.parse(currExpense.createdAt)))}",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,
@@ -241,29 +257,30 @@ class HomePageState extends State<HomePage> {
                             Container(
                               padding: EdgeInsets.all(8),
                               color: Colors.blue.shade100,
-                              child: Icon(CupertinoIcons.cart),
+                              child: Icon(AppConstants.expenseCat[currExpense.category]["icon"]),
                             ),
                             SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "${currExpense.type}",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                Text(
-                                  "${currExpense.desc}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.grey,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${currExpense.title}",
+                                    style: TextStyle(fontSize: 20),
                                   ),
-                                ),
-                                SizedBox(height: 5),
-                              ],
+                                  Text(
+                                    "${currExpense.desc}",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.grey,
+                                    ),overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
                             ),
-                            Spacer(),
                             Text(
-                              "-${currExpense.moneySpent}",
+                              "-${currExpense.amt}",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,

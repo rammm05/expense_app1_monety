@@ -1,7 +1,6 @@
 import 'package:expense_app1/app_routes.dart';
-import 'package:expense_app1/cubit/user_cubit.dart';
-import 'package:expense_app1/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_cubit.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +21,8 @@ class SignupPage extends StatelessWidget{
   final RegExp passwordRegex = RegExp(
       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$'
   );
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -182,30 +183,64 @@ class SignupPage extends StatelessWidget{
                 }
               ),
               SizedBox(height: 30,),
-              SizedBox(
-                height: 52,
-                width: double.infinity,
-                child: OutlinedButton(
-          
-                  onPressed: (){
-                    /*if(passwordControlller.text == confirmPasswordControlller.text){
-                      context.read<UserCubit>().addUser(
-                          user: UserModel(
-                              pass: passwordControlller.text,
-                              userName: useridControlller.text
-                          )
-                      );
-                    } else {
-                      print("Pass doesn't match!");
-                    }*/
-                    if(formKey.currentState!.validate()){
-                      Navigator.pushReplacementNamed(context, AppRoutes.route_bottom_nav_main);
 
-                    }
-          
+              BlocConsumer<UserCubit, UserState>(
+
+                listener: (context, state){
+                  if(state is UserLoadingState){
+                    isLoading = true;
+
+                  } else if (state is UserLoadedState){
+                    isLoading = false;
+                    Navigator.pushReplacementNamed(context, AppRoutes.route_bottom_nav_main);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Welcome to Monety"),
+                      backgroundColor: Colors.green,));
+
+
+                  } else if (state is UserFailureState){
+                    isLoading = false;
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(state.failureMsg),
+                      backgroundColor: Colors.red,));
+                  }
                 },
-          
-                  child: Text("Sign up", style: TextStyle(fontSize: 25),),),
+
+                builder: (context, state) {
+                  return SizedBox(
+                    height: 52,
+                    width: double.infinity,
+                    child: OutlinedButton(
+
+                      onPressed: (){
+                        if(formKey.currentState!.validate()){
+
+                          context.read<UserCubit>().signUpUser(
+                              email: userEmailControlller.text,
+                              pass: passwordControlller.text,
+                              mobileNo: int.parse(userMobileNoControlller.text),
+                              name: userNameControlller.text
+                          );
+
+
+                        }
+
+                    },
+
+                      child: isLoading ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            Text("Signing up..", style: TextStyle(fontSize: 25),)
+                          ],
+
+                        ),
+                      ) : Text("Sign up", style: TextStyle(fontSize: 25),),),
+                  );
+                }
               ),
               SizedBox(height: 11,),
               Center(

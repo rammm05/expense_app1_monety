@@ -291,12 +291,12 @@ class SecondPage extends StatelessWidget{
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(currExpense.type, style:
+                        Text(currExpense.title, style:
                         TextStyle(
                             fontSize: 20
                         ),overflow: TextOverflow.ellipsis, maxLines: 1,
                         ),
-                        Text("-${currExpense.moneySpent}", style:
+                        Text("-${currExpense.amt}", style:
                         TextStyle(
                             color: Colors.pinkAccent,
                             fontSize: 20

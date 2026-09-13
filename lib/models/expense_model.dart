@@ -1,39 +1,46 @@
 import 'package:expense_app1/db_helper.dart';
 
 class ExpenseModel {
-  int? id;
-  int moneySpent , moneyDebit; //0 -> credited , 1-> debited
-  String type, desc, date;
+  int? eId;
+  num  amt;
+  int userId, type, category; //1 -> credited , 0-> debited
+  String title, desc, createdAt;
 
   ExpenseModel({
-    required this.type,
+    required this.title,
     required this.desc,
-    required this.moneySpent,
-    required this.date,
-    required this.moneyDebit,
-    this.id
+    required this.amt,
+    required this.createdAt,
+    required this.category,
+    required this.type,
+    required this.userId,
+    this.eId
   });
 
   //fromMapToModel
 factory ExpenseModel.fromMap(Map<String, dynamic> map){
   return ExpenseModel(
-      type: map[DbHelper.EXPENSE_TYPE],
-      desc: map[DbHelper.EXPENSE_DESC],
-      moneySpent: map[DbHelper.EXPENSE_MONEY_SPENT],
-      date: map[DbHelper.EXPENSE_DATE],
-      moneyDebit: map[DbHelper.EXPENSE_DEBIT],
-      id: map[DbHelper.EXPENSE_ID]
+      title: map[DbHelper.COLUMN_EXPENSE_TITLE],
+      desc: map[DbHelper.COLUMN_EXPENSE_DESC],
+      amt: map[DbHelper.COLUMN_EXPENSE_AMT],
+      createdAt: map[DbHelper.COLUMN_EXPENSE_CREATED_AT],
+      category: map[DbHelper.COLUMN_EXPENSE_CATEGORY],
+      type: map[DbHelper.COLUMN_EXPENSE_TYPE],
+      userId: map[DbHelper.COLUMN_USER_ID],
+      eId: map[DbHelper.COLUMN_EXPENSE_ID]
   );
 }
 
   //fromModelToMap
 Map<String, dynamic> toMap(){
   return {
-    DbHelper.EXPENSE_TYPE : type,
-    DbHelper.EXPENSE_DESC : desc,
-    DbHelper.EXPENSE_MONEY_SPENT : moneySpent,
-    DbHelper.EXPENSE_DATE : date,
-    DbHelper.EXPENSE_DEBIT : moneyDebit,
+    DbHelper.COLUMN_EXPENSE_TITLE : title,
+    DbHelper.COLUMN_EXPENSE_DESC : desc,
+    DbHelper.COLUMN_EXPENSE_AMT : amt,
+    DbHelper.COLUMN_EXPENSE_CREATED_AT : createdAt,
+    DbHelper.COLUMN_EXPENSE_CATEGORY : category,
+    DbHelper.COLUMN_EXPENSE_TYPE : type,
+    DbHelper.COLUMN_USER_ID : userId,
   };
 }
 

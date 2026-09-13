@@ -6,8 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatelessWidget{
 
-  bool isOpened = false;
   //.. splashPage & preview3rdPage
+  bool isOpened = false;
+
+  //.. splashPage & dbHelper
+  bool isLoggedIn = false;
 
 
   @override
@@ -15,14 +18,22 @@ class SplashPage extends StatelessWidget{
 
 
     Timer(Duration(seconds: 4), () async {
-      //isOpenStatus();
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       isOpened =  prefs.getBool("isOpened") ?? false;
-      print("status : $isOpened");
+      print("statusOfOpen : $isOpened");
 
-      if(isOpened){
-        Navigator.pushReplacementNamed(context, AppRoutes.route_login);
+      int? userId = prefs.getInt("userId");
+      isLoggedIn = userId != null ? true : false;
+
+
+      if (isOpened) {
+        if (isLoggedIn) {
+          Navigator.pushReplacementNamed(
+              context, AppRoutes.route_bottom_nav_main);
+        } else {
+          Navigator.pushReplacementNamed(context, AppRoutes.route_login);
+        }
       } else {
         Navigator.pushReplacementNamed(context, AppRoutes.route_preview);
       }

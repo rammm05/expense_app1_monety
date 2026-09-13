@@ -4,6 +4,7 @@ import 'package:expense_app1/models/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InsertExpensePage extends StatefulWidget{
   @override
@@ -22,11 +23,19 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   int selectedCatIndex = -1;
 
+  int? userId;
+
+  getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt("userId");
+  }
+
   void clearAll(){
     titleController.clear();
     descController.text = "";
     amtController.clear();
     selectedDate = DateTime.now();
+    selectedExpenseType = 0;
     setState(() {});
   }
 
@@ -35,6 +44,7 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   @override
   Widget build(BuildContext context) {
+    getUserId();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -169,6 +179,65 @@ class InsertExpensePageState extends State<InsertExpensePage>{
     );
   }
 
+  ///...choose category
+  Widget getCat(){
+    return SizedBox(
+      height: 55,
+      width: double.infinity,
+      child: ElevatedButton(
+          onPressed: (){
+            showModalBottomSheet(context: context, builder: (context){
+              return Container(
+                padding: EdgeInsets.all(21),
+                width: double.infinity,
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
+                    itemCount: AppConstants.expenseCat.length,
+                    itemBuilder: (context, index){
+                      return InkWell(
+                        onTap: (){
+                          selectedCatIndex = index;
+                          setState(() {
+
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Column(
+                          children: [
+                            Icon(AppConstants.expenseCat[index]["icon"], size: 40,),
+                            Text(AppConstants.expenseCat[index]["type"]),
+                          ],
+                        ),
+                      );
+                    }),
+              );
+            });
+
+          },
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple.shade100,
+              side: BorderSide(color: Colors.black, width: 1),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
+          ),
+          child: selectedCatIndex < 0 ? Text("Choose Category",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black),
+          ) : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(AppConstants.expenseCat[selectedCatIndex]["icon"]),
+              Text("- ${AppConstants.expenseCat[selectedCatIndex]["type"]}",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black))
+            ],
+          )
+      ),
+    );
+  }
+
   ///...insertTypeStatus
   Widget insertType(){
     return Row(
@@ -189,77 +258,25 @@ class InsertExpensePageState extends State<InsertExpensePage>{
   ///...save
   Widget saveBtn(){
     return SizedBox(
+      height: 55,
       width: double.infinity,
       child: OutlinedButton(onPressed: (){
-        /*context.read<ExpenseCubit>().addExpense(expense: ExpenseModel(
-            type: typeController.text,
-            desc: descController.text,
-            moneySpent: int.tryParse(moneySpentController.text)  ?? 0,
-            date: selectedDate.millisecondsSinceEpoch.toString(),
-            moneyDebit: selectedMoneyStatus
-        ));*/
+        context.read<ExpenseCubit>().addExpense(
+            expense: ExpenseModel(
+                title: titleController.text,
+                desc: descController.text,
+                amt: num.parse(amtController.text),
+                createdAt: selectedDate.millisecondsSinceEpoch.toString(),
+                category: selectedCatIndex,
+                type: selectedExpenseType,
+                userId: userId!
+            ));
         clearAll();
       }, child: Text("Save",)),
     );
   }
 
-  Widget getCat(){
-    return SizedBox(
-      height: 55,
-      width: double.infinity,
-      child: ElevatedButton(
-          onPressed: (){
-            showModalBottomSheet(context: context, builder: (context){
-              return Container(
-                padding: EdgeInsets.all(21),
-                width: double.infinity,
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4, mainAxisSpacing: 10, crossAxisSpacing: 10),
-                    itemCount: AppConstants.expenseCat.length,
-                    itemBuilder: (context, index){
-                  return InkWell(
-                    onTap: (){
-                      selectedCatIndex = index;
-                      setState(() {
 
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: Column(
-                      children: [
-                        Icon(AppConstants.expenseCat[index]["icon"], size: 40,),
-                        Text(AppConstants.expenseCat[index]["type"]),
-                      ],
-                    ),
-                  );
-                }),
-              );
-            });
-
-          },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepPurple.shade100,
-              side: BorderSide(color: Colors.black, width: 1),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
-          ),
-          child: selectedCatIndex < 0 ? Text("Choose Category",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
-          ) : Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(AppConstants.expenseCat[selectedCatIndex]["icon"]),
-              Text("- ${AppConstants.expenseCat[selectedCatIndex]["type"]}",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black))
-            ],
-          )
-      ),
-    );
-  }
 
 
 
