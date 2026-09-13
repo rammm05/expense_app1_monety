@@ -1,6 +1,9 @@
 import 'package:expense_app1/app_routes.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_cubit.dart';
+import 'package:expense_app1/ui/user_on_board/cubit/user_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatelessWidget{
 
@@ -10,6 +13,8 @@ class LoginPage extends StatelessWidget{
   final emailRegExp = RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
+  bool isLoading = false;
 
 
   @override
@@ -37,8 +42,8 @@ class LoginPage extends StatelessWidget{
               SizedBox(height: 11,),
               TextFormField(
                 validator: (value){
-                  if(value!.length != 10 || emailRegExp.hasMatch(value)){
-                    return "enter valid email or phone number";
+                  if(value == null || value.isEmpty){
+                    return "please enter email or phone number";
 
                   } else {
                     return null;
@@ -58,6 +63,15 @@ class LoginPage extends StatelessWidget{
               ),
               SizedBox(height: 11,),
               TextFormField(
+                validator: (value){
+                  if(value == null || value.isEmpty){
+                    return "please enter password";
+
+                  } else {
+                    return null;
+                  }
+
+                },
                 controller: passwordControlller,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -70,16 +84,35 @@ class LoginPage extends StatelessWidget{
                 ),
               ),
               SizedBox(height: 22,),
-              SizedBox(
-                height: 55,
-                width: double.infinity,
-                child: OutlinedButton(onPressed: (){
-                  if(formkey.currentState!.validate()){
+              BlocConsumer<UserCubit, UserState>(
+                listener: (context, state){
+                  if(state is UserLoadingState){
+                    isLoading = true;
+                  } else if (state is UserLoadedState){
+                    isLoading = false;
                     Navigator.pushReplacementNamed(context, AppRoutes.route_bottom_nav_main);
-                  }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Welcome to Monety"),backgroundColor: Colors.green,));
 
+                  } else if(state is UserFailureState){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failureMsg),backgroundColor: Colors.red,));
+
+                  }
                 },
-                  child: Text("Login", style: TextStyle(fontSize: 25),),),
+                builder: (context, state) {
+                  return SizedBox(
+                    height: 55,
+                    width: double.infinity,
+                    child: OutlinedButton(onPressed: (){
+                      if(formkey.currentState!.validate()){
+                        context.read<UserCubit>().loginUser(
+                            email: emailOrPhoneNoControlller.text,
+                            pass: passwordControlller.text);
+                      }
+
+                    },
+                      child: Text("Login", style: TextStyle(fontSize: 25),),),
+                  );
+                }
               ),
               SizedBox(height: 150,),
               Row(

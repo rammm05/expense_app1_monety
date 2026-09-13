@@ -1,12 +1,35 @@
 import 'package:expense_app1/app_routes.dart';
-import 'package:expense_app1/ui/user_on_board/cubit/user_state.dart';
-import 'package:expense_app1/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfilePage extends StatelessWidget {
+import '../../user_on_board/cubit/user_cubit.dart';
+
+class ProfilePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => ProfilePageState();
+}
+
+class ProfilePageState extends State<ProfilePage>{
+  int? userId;
+  String? userName;
+
+  getUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userId = prefs.getInt("userId");
+    userName = await context.read<UserCubit>().getUser(userId!);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,41 +41,36 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 45),
         child: Column(
           children: [
-            /*Expanded(
-              child: BlocBuilder<UserCubit, UserState>(
-                builder: (context, state){
-
-                  List<UserModel> mUsers = state.mUsers;
-
-                  return ListView.builder(
-                      itemCount: mUsers.length,
-                      itemBuilder: (context, index){
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 30),
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.deepPurple.shade200
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            //mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(CupertinoIcons.profile_circled, size: 50),
-                              SizedBox(width: 10),
-                              Text("user1", style: TextStyle(fontSize: 25)),
-                              Spacer(),
-                              IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.delete)),
-                            ],
-                          ),
-                        );
-                      });
-                },
+            Container(
+              margin: EdgeInsets.only(bottom: 30),
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.deepPurple.shade200
               ),
-            ),*/
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                //mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(CupertinoIcons.profile_circled, size: 50),
+                  SizedBox(width: 10),
+                  Text(userName != null ? userName! : "user1", style: TextStyle(fontSize: 25)),
+                  Spacer(),
+                  Column(
+                    children: [
+                      Text("\$150", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.delete)),
+                    ],
+                  ),
+                ],
+              ),),
+
+            Spacer(),
+
+
             SizedBox(
-              height: 70,
+                height: 70,
                 width: double.infinity,
                 child: OutlinedButton(onPressed: () async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -65,3 +83,4 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+

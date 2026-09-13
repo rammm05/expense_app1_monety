@@ -280,7 +280,7 @@ class HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "-${currExpense.amt}",
+                              "-${currExpense.amt.toStringAsFixed(2)}",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,

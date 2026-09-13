@@ -296,7 +296,7 @@ class SecondPage extends StatelessWidget{
                             fontSize: 20
                         ),overflow: TextOverflow.ellipsis, maxLines: 1,
                         ),
-                        Text("-${currExpense.amt}", style:
+                        Text("-${currExpense.amt.toStringAsFixed(2)}", style:
                         TextStyle(
                             color: Colors.pinkAccent,
                             fontSize: 20
