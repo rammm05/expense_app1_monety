@@ -13,7 +13,7 @@ class UserCubit extends Cubit<UserState>{
 
     emit(UserLoadingState());
 
-    bool check = await dbHelper.authUser(email: email, pass: pass);
+    bool check = await dbHelper.authUser(emailOrMobileNo: email, pass: pass);
     if(check){
       emit(UserLoadedState());
     } else {

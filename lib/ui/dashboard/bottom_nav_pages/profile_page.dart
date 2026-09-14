@@ -1,4 +1,5 @@
 import 'package:expense_app1/app_routes.dart';
+import 'package:expense_app1/ui/dashboard/provider/bottom_nav_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,9 +74,15 @@ class ProfilePageState extends State<ProfilePage>{
                 height: 70,
                 width: double.infinity,
                 child: OutlinedButton(onPressed: () async {
+
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.remove("userId");
+
                   Navigator.pushReplacementNamed(context, AppRoutes.route_login);
+
+                  context.read<BottomNavProvider>().index = 0;
+
+
                 }, child: Text("Log Out", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),))),
           ],
         ),

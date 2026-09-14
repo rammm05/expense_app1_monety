@@ -257,7 +257,7 @@ class HomePageState extends State<HomePage> {
                             Container(
                               padding: EdgeInsets.all(8),
                               color: Colors.blue.shade100,
-                              child: Icon(AppConstants.expenseCat[currExpense.category]["icon"]),
+                              child: currExpense.category == -1 ? Icon(Icons.invert_colors_on_sharp) : Icon(AppConstants.expenseCat[currExpense.category]["icon"]),
                             ),
                             SizedBox(width: 10),
                             Expanded(
@@ -280,7 +280,7 @@ class HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "-${currExpense.amt.toStringAsFixed(2)}",
+                              "-${currExpense.amt.toInt() == currExpense.amt ? currExpense.amt.toInt() : currExpense.amt.toStringAsFixed(2)}",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.w500,

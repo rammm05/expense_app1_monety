@@ -78,8 +78,8 @@ class DbHelper {
 
 
 /// 1-> insert
-/// 1-> failure
-/// 1-> email already exists
+/// 2-> failure
+/// 3-> email already exists
   Future<int> registerUser({required UserModel newUser}) async {
     Database db = await initDB();
     bool ifUserExists = await checkIfEmailExists(email: newUser.email);
@@ -118,11 +118,22 @@ class DbHelper {
 
   }
 
-  Future<bool> authUser({required String email, required String pass}) async {
+  Future<bool> checkIfMobileNoExists({ required int mobileNo}) async {
+    Database db = await initDB();
+    List<Map<String, dynamic>> userData = await db.query(
+        TABLE_USER ,
+        where: "$COLUMN_USER_MOBILE_NO" ,
+      whereArgs: [mobileNo]
+    );
+
+    return userData.isNotEmpty;
+  }
+
+  Future<bool> authUser({required String emailOrMobileNo, required String pass}) async {
     Database db = await initDB();
     List<Map<String, dynamic>> userData = await db.query(TABLE_USER ,
-        where: " $COLUMN_USER_EMAIL = ? and $COLUMN_USER_PASSWORD = ? ",
-        whereArgs: [email, pass]
+        where: " ($COLUMN_USER_EMAIL = ? or $COLUMN_USER_MOBILE_NO = ?) and $COLUMN_USER_PASSWORD = ? ",
+        whereArgs: [emailOrMobileNo, emailOrMobileNo, pass]
     );
 
     if(userData.isNotEmpty){

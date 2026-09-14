@@ -272,6 +272,7 @@ class InsertExpensePageState extends State<InsertExpensePage>{
                 userId: userId!
             ));
         clearAll();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Expense added"), backgroundColor: Colors.green,));
       }, child: Text("Save",)),
     );
   }

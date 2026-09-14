@@ -16,6 +16,8 @@ class LoginPage extends StatelessWidget{
 
   bool isLoading = false;
 
+  bool isPassVisible = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,27 +64,40 @@ class LoginPage extends StatelessWidget{
                 ),
               ),
               SizedBox(height: 11,),
-              TextFormField(
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return "please enter password";
 
-                  } else {
-                    return null;
-                  }
+              StatefulBuilder(
+                builder: (context, ss) {
+                  return TextFormField(
+                    validator: (value){
+                      if(value == null || value.isEmpty){
+                        return "please enter password";
 
-                },
-                controller: passwordControlller,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)
+                      } else {
+                        return null;
+                      }
+
+                    },
+                    obscureText: !isPassVisible,
+                    controller: passwordControlller,
+                    decoration: InputDecoration(
+                      suffixIcon: InkWell(
+                        onTap: (){
+                          isPassVisible = !isPassVisible;
+                          ss((){});
+                        },
+                          child: Icon( isPassVisible ? Icons.visibility : Icons.visibility_off)),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black)
+                        ),
+                        hintText: "Enter password here..",
+                        labelText: "Password",
+                        fillColor: Colors.deepPurple.shade100,
+                        filled: true
                     ),
-                    hintText: "Enter password here..",
-                    labelText: "Password",
-                    fillColor: Colors.deepPurple.shade100,
-                    filled: true
-                ),
+                  );
+                }
               ),
+
               SizedBox(height: 22,),
               BlocConsumer<UserCubit, UserState>(
                 listener: (context, state){
@@ -95,6 +110,7 @@ class LoginPage extends StatelessWidget{
 
                   } else if(state is UserFailureState){
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failureMsg),backgroundColor: Colors.red,));
+                    isLoading = false;
 
                   }
                 },
@@ -110,7 +126,13 @@ class LoginPage extends StatelessWidget{
                       }
 
                     },
-                      child: Text("Login", style: TextStyle(fontSize: 25),),),
+                      child: isLoading ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text("Logging in", style: TextStyle(fontSize: 20),)
+                        ],
+                      ) : Text("Login", style: TextStyle(fontSize: 25),),),
                   );
                 }
               ),

@@ -1,3 +1,4 @@
+import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/models/expense_model.dart';
@@ -284,7 +285,7 @@ class SecondPage extends StatelessWidget{
                       borderRadius: BorderRadius.circular(5),
                       color: Colors.green.shade200,
                     ),
-                    child: Icon(CupertinoIcons.cart),
+                    child: Icon(AppConstants.expenseCat[currExpense.category]["icon"]),
                   ),
                   Expanded(
                     child: Column(
