@@ -1,3 +1,4 @@
+import 'package:expense_app1/app_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -98,7 +99,7 @@ class PreviewPageThird extends StatelessWidget{
           child: FloatingActionButton(onPressed: () async {
 
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setBool("isOpened", true);
+            prefs.setBool(AppConstants.PREF_IS_OPENED, true);
 
             Navigator.pushReplacementNamed(context, AppRoutes.route_login);
           },

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
 
+  static const String PREF_USER_ID = "userId";
+  static const String PREF_IS_OPENED = "isOpened";
+
   static const List<Map<String, dynamic>> expenseCat = [
     {
       "type": "Shopping",

@@ -3,7 +3,7 @@ import 'package:expense_app1/ui/dashboard/bottom_nav_pages/home_page.dart';
 import 'package:expense_app1/ui/dashboard/bottom_nav_pages/insert_expense_page.dart';
 import 'package:expense_app1/ui/dashboard/bottom_nav_pages/notification_page.dart';
 import 'package:expense_app1/ui/dashboard/bottom_nav_pages/profile_page.dart';
-import 'package:expense_app1/ui/dashboard/bottom_nav_pages/second_page.dart';
+import 'package:expense_app1/ui/dashboard/bottom_nav_pages/stats_page.dart';
 import 'package:expense_app1/ui/user_on_board/login_page.dart';
 import 'package:expense_app1/ui/preview_pages/preview_page.dart';
 import 'package:expense_app1/ui/preview_pages/preview_page_second.dart';

@@ -1,12 +1,21 @@
-import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
-import 'package:expense_app1/models/expense_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SecondPage extends StatelessWidget{
+class SecondPage extends StatefulWidget{
+
+
+  @override
+  State<SecondPage> createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  List<String> mFilterType = ["Date-Wise", "Month-Wise", "Year-Wise", "Category-Wise"];
+
+  int selectedFilterType = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,14 +59,22 @@ class SecondPage extends StatelessWidget{
       Container(
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            //color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Row(
-            children: [
-              Text("This month"),
-              Icon(Icons.expand_more)
-            ],
+          child: DropdownMenu(
+            dropdownMenuEntries: List.generate(mFilterType.length, (index){
+              return DropdownMenuEntry(
+                  value: index,
+                  label: mFilterType[index]);
+            }
+            ),
+            initialSelection: selectedFilterType,
+            onSelected: (value){
+              selectedFilterType = value!;
+              context.read<ExpenseCubit>().fetchAllExpense(filterType: value ?? 0);
+
+            },
           )
       )
     ],
@@ -162,12 +179,53 @@ class SecondPage extends StatelessWidget{
   );
 
   ///...graph card part ..4
-  Widget graphCard() => SizedBox(
-    width: double.infinity,
-    height: 200,
-    child: Card(
-      color: Colors.grey.shade200,
-    ),
+  Widget graphCard() => BlocBuilder<ExpenseCubit, ExpenseState>(
+    builder: (context, state) {
+
+      if(state is ExpenseLoadedState){
+
+        var allData = state.expenseList;
+
+      return SizedBox(
+          width: double.infinity,
+          height: 200,
+          child: Card(
+            color: Colors.grey.shade200,
+            child: BarChart(
+              BarChartData(
+
+                titlesData: FlTitlesData(
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      getTitlesWidget: (value, _){
+                        return Text(allData[value.toInt()].title, style: TextStyle(fontSize: 8),);
+
+                      }
+                    )
+                  )
+                ),
+                  //maxY: 50000,
+                  barGroups: List.generate(allData.length, (index){
+                    return BarChartGroupData(x: index, barRods: [
+                      BarChartRodData(toY: allData[index].balance.abs().toDouble(),
+                        width: 15,
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(5))
+                      )
+                    ]);
+                  })
+
+              ),
+            ),
+          ),
+        );
+      }
+
+      return Container();
+
+
+    }
   );
 
   ///...spending details title part ..5
@@ -251,6 +309,8 @@ class SecondPage extends StatelessWidget{
 
   ///...grid part ..9
   Widget gridPart(){
+    return Container();
+/*
     return BlocBuilder<ExpenseCubit, ExpenseState>(builder: (context, state){
 
       List<ExpenseModel> expenseList = state.expenseList;
@@ -313,7 +373,6 @@ class SecondPage extends StatelessWidget{
           }
       );
     });
+*/
   }
-
-
 }

@@ -1,6 +1,8 @@
 import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
+import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/models/expense_model.dart';
+import 'package:expense_app1/ui/dashboard/provider/bottom_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -23,12 +25,8 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   int selectedCatIndex = -1;
 
-  int? userId;
 
-  getUserId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userId = prefs.getInt("userId");
-  }
+  bool isLoading = false;
 
   void clearAll(){
     titleController.clear();
@@ -36,6 +34,7 @@ class InsertExpensePageState extends State<InsertExpensePage>{
     amtController.clear();
     selectedDate = DateTime.now();
     selectedExpenseType = 0;
+    selectedCatIndex = -1;
     setState(() {});
   }
 
@@ -44,7 +43,6 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   @override
   Widget build(BuildContext context) {
-    getUserId();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -257,31 +255,61 @@ class InsertExpensePageState extends State<InsertExpensePage>{
 
   ///...save
   Widget saveBtn(){
-    return SizedBox(
-      height: 55,
-      width: double.infinity,
-      child: OutlinedButton(onPressed: (){
-        context.read<ExpenseCubit>().addExpense(
-            expense: ExpenseModel(
-                title: titleController.text,
-                desc: descController.text,
-                amt: num.parse(amtController.text),
-                createdAt: selectedDate.millisecondsSinceEpoch.toString(),
-                category: selectedCatIndex,
-                type: selectedExpenseType,
-                userId: userId!
-            ));
-        clearAll();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Expense added"), backgroundColor: Colors.green,));
-      }, child: Text("Save",)),
+    return BlocConsumer<ExpenseCubit, ExpenseState>(
+      listener: (context, state){
+
+        if (state is ExpenseLoadingState){
+          isLoading = true;
+        }
+
+        if (state is ExpenseErrorState){
+          isLoading = false;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errMsg), backgroundColor: Colors.red,));
+        }
+
+        if (state is ExpenseLoadedState){
+          isLoading = false;
+          clearAll();
+          context.read<BottomNavProvider>().index = 0;
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Expense added Successfully!!"),
+                backgroundColor: Colors.green,));
+        }
+
+      },
+      builder: (context, state) {
+        return SizedBox(
+          height: 55,
+          width: double.infinity,
+          child: OutlinedButton(onPressed: (){
+            if(selectedCatIndex>=0){
+              context.read<ExpenseCubit>().addExpense(
+                  expense: ExpenseModel(
+                    title: titleController.text,
+                    desc: descController.text,
+                    amt: num.parse(amtController.text),
+                    createdAt: selectedDate.millisecondsSinceEpoch.toString(),
+                    category: selectedCatIndex,
+                    type: selectedExpenseType,
+                  ));
+            }
+          }, child: isLoading ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: Colors.pinkAccent.shade200,
+                ),
+                SizedBox(width: 11,),
+                Text("Saving",)
+              ],
+            ),
+          ) : Text("Save",)),
+        );
+      }
     );
   }
-
-
-
-
-
-
-
 
 }

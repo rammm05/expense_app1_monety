@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/models/expense_model.dart';
 import 'package:expense_app1/models/user_model.dart';
 import 'package:path/path.dart';
@@ -58,13 +59,26 @@ class DbHelper {
 
   Future <bool> addExpense({required ExpenseModel expense}) async {
     Database db = await initDB();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int uId = prefs.getInt(AppConstants.PREF_USER_ID) ?? 0;
+    expense.userId = uId;
+
     int rowsEffected = await db.insert(TABLE_EXPENSE, expense.toMap());
     return rowsEffected>0;
   }
 
   Future<List<ExpenseModel>> fetchExpenses() async {
     Database db = await initDB();
-    List<Map<String, dynamic>> data = await db.query(TABLE_EXPENSE);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int uId = prefs.getInt(AppConstants.PREF_USER_ID) ?? 0;
+
+    List<Map<String, dynamic>> data = await db.query(
+        TABLE_EXPENSE,
+        where: "$COLUMN_USER_ID = ?",
+      whereArgs: ["$uId"]
+    );
 
     List<ExpenseModel> mExpense = [];
 
@@ -95,7 +109,7 @@ class DbHelper {
 
         int uid =  userData[0][COLUMN_USER_ID];
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setInt("userId", uid);
+        prefs.setInt(AppConstants.PREF_USER_ID, uid);
 
         return 1;
       } else {
@@ -139,7 +153,7 @@ class DbHelper {
     if(userData.isNotEmpty){
       int uid =  userData[0][COLUMN_USER_ID];
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setInt("userId", uid);
+      prefs.setInt(AppConstants.PREF_USER_ID, uid);
     }
 
     return userData.isNotEmpty;

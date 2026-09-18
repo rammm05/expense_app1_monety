@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/cubit/expense_cubit.dart';
 import 'package:expense_app1/cubit/expense_state.dart';
 import 'package:expense_app1/models/expense_model.dart';
+import 'package:expense_app1/models/filter_expense_model.dart';
 import 'package:expense_app1/ui/dashboard/provider/bottom_nav_provider.dart';
 import 'package:expense_app1/ui/user_on_board/cubit/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,6 +23,9 @@ class HomePageState extends State<HomePage> {
 
   int? userId;
   String? userName;
+
+  List<String> mFilterType = ["Date-Wise", "Month-Wise", "Year-Wise", "Category-Wise"];
+  int selectedFilterType = 0;
 
   getUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -113,18 +119,37 @@ class HomePageState extends State<HomePage> {
         Spacer(),
         Container(
           height: 35,
-          width: 135,
+          width: 140,
           decoration: BoxDecoration(
-            color: Color(0x41A6B5C1),
+            //color: Color(0x41A6B5C1),
             borderRadius: BorderRadius.circular(3),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("This month", style: TextStyle(fontSize: 18)),
-              Icon(Icons.expand_more),
-            ],
-          ),
+          child: DropdownMenu(
+              dropdownMenuEntries: List.generate(mFilterType.length, (index){
+                return DropdownMenuEntry(
+                    value: index,
+                    label: mFilterType[index]);
+              }
+              ),
+            initialSelection: selectedFilterType,
+            onSelected: (value){
+                selectedFilterType = value!;
+                context.read<ExpenseCubit>().fetchAllExpense(filterType: value ?? 0);
+
+          },
+          )
+
+          /*DropdownButton(items: List.generate(mFilterType.length, (index){
+            return DropdownMenuItem(
+              value: index,
+                child: Text(mFilterType[index]));
+
+          }), onChanged: (value){
+            selectedFilterType = value!;
+            context.read<ExpenseCubit>().fetchAllExpense(filterType: value ?? 0);
+
+          })*/
+
         ),
       ],
     );
@@ -212,93 +237,117 @@ class HomePageState extends State<HomePage> {
   Widget expenseList() {
     return BlocBuilder<ExpenseCubit, ExpenseState>(
       builder: (context, state) {
-        List<ExpenseModel> expenseList = state.expenseList;
+        if(state is ExpenseLoadingState){
+         return Center(child: CircularProgressIndicator());
 
-        return expenseList.isNotEmpty
-            ? ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: state.expenseList.length,
-                itemBuilder: (context, index) {
+        }
 
-                  ExpenseModel currExpense = expenseList[index];
+        if(state is ExpenseLoadedState){
+          List<FilterExpenseModel> expenseList = state.expenseList;
 
-                  return Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Column(
+          return expenseList.isNotEmpty
+              ? ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: state.expenseList.length,
+            itemBuilder: (context, index) {
+
+              FilterExpenseModel currExpense = expenseList[index];
+
+              return Container(
+                margin: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "${df.format(DateTime.fromMillisecondsSinceEpoch(int.parse(currExpense.createdAt)))}",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              "-\$1380",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                        Text(currExpense.title, style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        Divider(),
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              color: Colors.blue.shade100,
-                              child: currExpense.category == -1 ? Icon(Icons.invert_colors_on_sharp) : Icon(AppConstants.expenseCat[currExpense.category]["icon"]),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${currExpense.title}",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Text(
-                                    "${currExpense.desc}",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.grey,
-                                    ),overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(height: 5),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              "-${currExpense.amt.toInt() == currExpense.amt ? currExpense.amt.toInt() : currExpense.amt.toStringAsFixed(2)}",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.pink.shade300,
-                              ),
-                            ),
-                          ],
+                        Text(currExpense.balance.toStringAsFixed(2), style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
-                  );
-                },
-              )
-            : Container(
-          height: 150,
-          //color: Colors.green,
-            child: Center(child: Text("No expense added yet!", style: TextStyle(fontSize: 25, color: Colors.grey),)));
-      },
+                    Divider(),
+                    ListView.builder(
+                      shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: currExpense.expenseList.length,
+                        itemBuilder: (context, childIndex){
+
+                          ExpenseModel eachExp = currExpense.expenseList[childIndex];
+
+                      return Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.primaries[Random().nextInt(Colors.primaries.length)].shade100,
+                              borderRadius: BorderRadius.circular(8)
+
+                            ),
+                            child: eachExp.category == -1 ? Icon(Icons.invert_colors_on_sharp) : Icon(AppConstants.expenseCat[eachExp.category]["icon"]),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${eachExp.title}",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  "${eachExp.desc}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: 5),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            "${eachExp.type == 0 ? "-" : "+"} ${eachExp.amt.toInt() == eachExp.amt ? eachExp.amt.toInt() : eachExp.amt.toStringAsFixed(2)}",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: eachExp.type == 0 ? Colors.pink.shade300 : Colors.deepPurple,
+                            ),
+                          ),
+                        ],
+                      );
+
+
+                    })
+                  ],
+                ),
+              );
+            },
+          )
+              : Container(
+              height: 150,
+              //color: Colors.green,
+              child: Center(child: Text("No expense added yet!", style: TextStyle(fontSize: 25, color: Colors.grey),)));
+        }
+
+        if(state is ExpenseErrorState){
+         return Center(child: Text(state.errMsg));
+        }
+
+        return Container();
+}
     );
   }
 

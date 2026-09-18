@@ -8,7 +8,7 @@ import 'bottom_nav_pages/home_page.dart';
 import 'bottom_nav_pages/insert_expense_page.dart';
 import 'bottom_nav_pages/notification_page.dart';
 import 'bottom_nav_pages/profile_page.dart';
-import 'bottom_nav_pages/second_page.dart';
+import 'bottom_nav_pages/stats_page.dart';
 
 class BottomNavMainPage extends StatefulWidget{
   @override

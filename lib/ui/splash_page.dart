@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:expense_app1/app_constants.dart';
 import 'package:expense_app1/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,10 +21,10 @@ class SplashPage extends StatelessWidget{
     Timer(Duration(seconds: 4), () async {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      isOpened =  prefs.getBool("isOpened") ?? false;
+      isOpened =  prefs.getBool(AppConstants.PREF_IS_OPENED) ?? false;
       print("statusOfOpen : $isOpened");
 
-      int? userId = prefs.getInt("userId");
+      int? userId = prefs.getInt(AppConstants.PREF_USER_ID);
       isLoggedIn = userId != null ? true : false;
 
 
